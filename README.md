@@ -8,7 +8,7 @@ trading higher or lower than the previous 15 minuet window
 
 ## Example
 
-
+![Get cryptocurrency prices on a Das Keybaord Q](assets/image.png "Crypto Watch")
 
 ## Changelog
 
@@ -30,6 +30,8 @@ the Q Desktop application (<https://www.daskeyboard.com/q>)
 Pull requests welcome!
 
 ## Copyright / License
+
+Copyright 2019 Brandon Wolfe
 
 Licensed under the GNU General Public License Version 2.0 (or later);
 you may not use this work except in compliance with the License.
