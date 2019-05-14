@@ -1,14 +1,14 @@
-# Q Applet: Stock Quote - USA
+# Q Applet: Crypto Watch
 
-Displays stock quote changes on a Das Keyboard Q Series.
-Keys are assigned either a green or a red color depending on the stock
-trading higher or lower than the previous day's close
+Displays cryptocurrecny price changes on a Das Keyboard Q Series.
+Keys are assigned either a green or a red color depending on the cryptocurrency
+trading higher or lower than the previous 15 minuet window
 
-[GitHub repository](https://github.com/daskeyboard/q-applet-stock-quote)
+[GitHub repository](https://github.com/Wolfe1/daskeyboard-applet--crypto-watch)
 
 ## Example
 
-![Stock quote - USA on a Das Keybaord Q](assets/image.png "Q Stock quote - USA")
+
 
 ## Changelog
 
@@ -27,11 +27,9 @@ the Q Desktop application (<https://www.daskeyboard.com/q>)
 
 ## Contributions
 
-Pull requests welcome.
+Pull requests welcome!
 
 ## Copyright / License
-
-Copyright 2014 - 2019 Das Keyboard / Metadot Corp.
 
 Licensed under the GNU General Public License Version 2.0 (or later);
 you may not use this work except in compliance with the License.
