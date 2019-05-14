@@ -45,6 +45,7 @@ class CryptoWatch extends q.DesktopApp {
 
   generateSignal(quote, oldPrice) {
     const currency = this.config.currency;
+    const isMuted = this.config.isMuted;
     const previousClose = oldPrice.data.amount * 1;
     const latestPrice = quote.data.amount * 1;
 
@@ -64,7 +65,8 @@ class CryptoWatch extends q.DesktopApp {
       name: 'Current ' + currency +' Price',
       message:
         `${currency.substr(currency.length -3)} ${latestPrice} (${change} ${changePercent}%)` +
-        `<br/>Previous close: ${previousClose}`
+        `<br/>Previous close: ${previousClose}`,
+      isMuted: isMuted  
     });
   }
 

@@ -27,7 +27,7 @@
     "yarn": "^1.16.0"
   },
   "engines": {
-    "das-keyboard-q": "3.0.0"
+    "das-keyboard-q": "3.2.4"
   },
   "applet": {
     "defaults": {}
@@ -50,6 +50,15 @@
         "order": 1,
         "controlType": "textbox",
         "value": "BTC-USD"
+      },
+      {
+        "key": "isMuted",
+        "label": "Display alerts?",
+        "help": "Display and alert window (bottom right of the screen) on each update?",
+        "required": true,
+        "order": 2,
+        "controlType": "checkbox",
+        "value": false
       }
     ]
   },
