@@ -63,7 +63,7 @@ class CryptoWatch extends q.DesktopApp {
       },
       name: 'Current ' + currency +' Price',
       message:
-        `${latestPrice} (${change} ${changePercent}%)` +
+        `${currency.substr(currency.length -3)} ${latestPrice} (${change} ${changePercent}%)` +
         `<br/>Previous close: ${previousClose}`
     });
   }
