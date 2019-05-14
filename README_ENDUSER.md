@@ -1,7 +1,7 @@
-# Stock Quote - USA
+# Crypto Watch
 
-Displays stock quote variations.
+Displays cryptocurrency price variations.
 
-![Stock quote - USA on a Das Keybaord Q](assets/image.png "Q Stock quote - USA")
 
-This applet uses stock quotes from [IEX](https://iextrading.com/apps/stocks/)
+
+This applet uses price information from [Coinbase](https://www.coinbase.com/)
