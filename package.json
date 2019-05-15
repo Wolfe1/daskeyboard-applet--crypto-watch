@@ -52,11 +52,32 @@
         "value": "BTC-USD"
       },
       {
+        "key": "refreshInterval",
+        "label": "Refresh Interval",
+        "help": "How often do you want to receive new data?",
+        "required": true,
+        "order": 2,
+        "controlType": "dropdown",
+        "options": [{
+          "key": "5",
+          "value": "5 Minutes"
+        }, {
+          "key": "15",
+          "value": "15 Minutes"
+        }, {
+          "key": "30",
+          "value": "30 Minutes"
+        }, {
+          "key": "60",
+          "value": "1 Hour"
+        }]
+      },
+      {
         "key": "isMuted",
         "label": "Display alerts?",
         "help": "Display and alert window (bottom right of the screen) on each update?",
         "required": true,
-        "order": 2,
+        "order": 3,
         "controlType": "checkbox",
         "value": false
       }

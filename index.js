@@ -1,6 +1,7 @@
 const q = require('daskeyboard-applet');
 const request = require('request-promise');
 const logger = q.logger;
+var refreshInterval;
 
 const apiUrl = 'https://api.coinbase.com/v2/prices/';
 
@@ -12,9 +13,9 @@ async function getQuote(currency) {
   return data;
 }
 
-async function getOldQuote(currency) {
+function getOldQuote(currency, refreshInterval) {
   var dt = new Date();
-  dt.setMinutes(dt.getMinutes() - 5);
+  dt.setMinutes(dt.getMinutes() - refreshInterval);
   var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON()
   var data2 = request.get({
     url: pastUrl,
@@ -39,8 +40,8 @@ class CryptoWatch extends q.DesktopApp {
 
   constructor() {
     super();
-    // run every 5 min
-    this.pollingInterval = 5 * 60 * 1000;
+    const refreshInterval = this.config.refreshInterval
+    this.pollingInterval = refreshInterval * 60 * 1000;
   }
 
   generateSignal(quote, oldPrice) {
@@ -73,9 +74,10 @@ class CryptoWatch extends q.DesktopApp {
   async run() {
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency;
+    const refreshInterval = this.config.refreshInterval
     if (currency) {
       logger.info("My currency is: " + currency);
-      return getOldQuote(currency).then(oldQuote => {
+      return getOldQuote(currency, refreshInterval).then(oldQuote => {
         return getQuote(currency).then(quote => {
           return this.generateSignal(quote, oldQuote);
       })}).catch((error) => {
@@ -95,6 +97,7 @@ class CryptoWatch extends q.DesktopApp {
 
   async applyConfig() {
     const currency = this.config.currency;
+    console.log('LOOK: ' + refreshInterval)
     if (currency) {
       return getQuote(currency).then((response) => {
         return true;
