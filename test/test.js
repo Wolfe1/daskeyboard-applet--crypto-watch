@@ -1,7 +1,7 @@
 const assert = require('assert');
 const t = require('../index');
 const currency = 'BTC-USD';
-const refreshInterval = 15;
+const refresh = 1440;
 const companyName = 'Apple Inc.';
 
 describe('getQuote', function () {
@@ -18,7 +18,7 @@ describe('getQuote', function () {
 
 describe('getOldQuote', function () {
   it('can get an old quote', function () {
-    return t.getOldQuote(currency, 15).then((quote) => {
+    return t.getOldQuote(currency, refresh).then((quote) => {
       assert.ok(quote, 'Error in quote.');
       assert.equal(currency, quote.data.base + '-' + quote.data.currency, 'Currency does not match: ' + currency);
       assert.ok(quote.data.amount, 'Error getting latestPrice.');
@@ -115,7 +115,7 @@ const baseConfig = {
   applet: {
     user: {
       currency: currency,
-      refreshInterval: refreshInterval,
+      refresh: refresh,
       isMuted: true
     }
   }

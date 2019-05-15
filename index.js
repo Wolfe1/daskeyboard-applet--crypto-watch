@@ -1,7 +1,6 @@
 const q = require('daskeyboard-applet');
 const request = require('request-promise');
 const logger = q.logger;
-var refreshInterval;
 
 const apiUrl = 'https://api.coinbase.com/v2/prices/';
 
@@ -13,10 +12,11 @@ async function getQuote(currency) {
   return data;
 }
 
-function getOldQuote(currency, refreshInterval) {
+async function getOldQuote(currency, refreshInterval) {
   var dt = new Date();
   dt.setMinutes(dt.getMinutes() - refreshInterval);
   var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON()
+  logger.info("My url is: " + pastUrl);
   var data2 = request.get({
     url: pastUrl,
     json: true
@@ -40,13 +40,14 @@ class CryptoWatch extends q.DesktopApp {
 
   constructor() {
     super();
-    const refreshInterval = this.config.refreshInterval
-    this.pollingInterval = refreshInterval * 60 * 1000;
+    logger.info("My refresh is: " + this.getRefreshInterval());
+    this.pollingInterval = this.getRefreshInterval() * 60 * 1000;
   }
 
   generateSignal(quote, oldPrice) {
     const currency = this.config.currency;
     const isMuted = this.config.isMuted;
+    //const refresh = this.config.refresh;
     const previousClose = oldPrice.data.amount * 1;
     const latestPrice = quote.data.amount * 1;
 
@@ -74,10 +75,11 @@ class CryptoWatch extends q.DesktopApp {
   async run() {
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency;
-    const refreshInterval = this.config.refreshInterval
+    const refresh = this.getRefreshInterval();
+    logger.info("My refresh2 is: " + refresh);
     if (currency) {
       logger.info("My currency is: " + currency);
-      return getOldQuote(currency, refreshInterval).then(oldQuote => {
+      return getOldQuote(currency, refresh).then(oldQuote => {
         return getQuote(currency).then(quote => {
           return this.generateSignal(quote, oldQuote);
       })}).catch((error) => {
@@ -97,7 +99,9 @@ class CryptoWatch extends q.DesktopApp {
 
   async applyConfig() {
     const currency = this.config.currency;
-    console.log('LOOK: ' + refreshInterval)
+    //const refresh = this.config.refresh;
+    //logger.info("My refresh is: " + refresh);
+    //console.log('LOOK: ' + this.config.refresh);
     if (currency) {
       return getQuote(currency).then((response) => {
         return true;
@@ -106,6 +110,10 @@ class CryptoWatch extends q.DesktopApp {
       })
     }
   }
+
+  getRefreshInterval() {
+		return this.config.refresh ? this.config.refresh : 15;
+	}
 }
 
 
