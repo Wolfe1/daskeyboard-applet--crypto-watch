@@ -1,7 +1,7 @@
 const assert = require('assert');
 const t = require('../index');
 const currency = 'BTC-USD';
-const refresh = 1440;
+const refresh = 60;
 const companyName = 'Apple Inc.';
 
 describe('getQuote', function () {
