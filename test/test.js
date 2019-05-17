@@ -1,27 +1,27 @@
 const assert = require('assert');
 const t = require('../index');
 const currency = 'BTC-USD';
-const refresh = 1440;
-const companyName = 'Apple Inc.';
+const refresh = 60;
 
-describe('getQuote', function () {
-  it('can get a quote', function () {
-    return t.getQuote(currency).then((quote) => {
-      assert.ok(quote, 'Error in quote.');
-      assert.equal(currency, quote.data.base + '-' + quote.data.currency, 'Currency does not match: ' + currency);
-      assert.ok(quote.data.amount, 'Error getting latestPrice.');
+describe('getPrice', function () {
+  it('can get a price', function () {
+    return t.getPrice(currency).then((price) => {
+      assert.ok(price, 'Error in price.');
+      assert.equal(currency, price.data.base + '-' + price.data.currency, 'Currency does not match: ' + currency);
+      assert.ok(price.data.amount, 'Error getting latestPrice.');
     }).catch((error) => {
       assert.fail(error);
     })
   })
 });
 
-describe('getOldQuote', function () {
-  it('can get an old quote', function () {
-    return t.getOldQuote(currency, refresh).then((quote) => {
-      assert.ok(quote, 'Error in quote.');
-      assert.equal(currency, quote.data.base + '-' + quote.data.currency, 'Currency does not match: ' + currency);
-      assert.ok(quote.data.amount, 'Error getting latestPrice.');
+describe('getOldPrice', function () {
+  it('can get an old price', function () {
+    return t.getOldPrice(currency, refresh).then((price) => {
+      console.info("oldPriceRefresh: " + refresh);
+      assert.ok(price, 'Error in price.');
+      assert.equal(currency, price.data.base + '-' + price.data.currency, 'Currency does not match: ' + currency);
+      assert.ok(price.data.amount, 'Error getting latestPrice.');
     }).catch((error) => {
       assert.fail(error);
     })
@@ -75,12 +75,12 @@ describe('CryptoWatch', () => {
     })
   });
 
-  describe('#generateSignal(quote)', function () {
-    it('generates the quote', function () {
+  describe('#generateSignal(price)', function () {
+    it('generates the price', function () {
       return buildApp().then(app => {
-        const quote = require('./test-quote.json');
-        const oldQuote = require('./test-quote-old.json');
-        const signal = app.generateSignal(quote, oldQuote);
+        const price = require('./test-price.json');
+        const oldPrice = require('./test-price-old.json');
+        const signal = app.generateSignal(price, oldPrice);
         assert.ok(signal);
         assert(signal.message.includes('USD'));
         assert(signal.message.includes('7882.825'));

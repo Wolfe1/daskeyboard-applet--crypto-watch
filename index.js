@@ -4,20 +4,21 @@ const logger = q.logger;
 
 const apiUrl = 'https://api.coinbase.com/v2/prices/';
 
-async function getQuote(currency) {
-  var data = request.get({
+async function getPrice(currency) {
+  var data = await request.get({
     url: apiUrl + currency + '/spot',
     json: true
   });
   return data;
 }
 
-async function getOldQuote(currency, refreshInterval) {
+async function getOldPrice(currency, refreshInterval) {
   var dt = new Date();
+  logger.info("My refresh is TOTALLY: " + refreshInterval);
   dt.setMinutes(dt.getMinutes() - refreshInterval);
-  var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON()
+  var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
   logger.info("My url is: " + pastUrl);
-  var data2 = request.get({
+  var data2 = await request.get({
     url: pastUrl,
     json: true
   });
@@ -42,14 +43,17 @@ class CryptoWatch extends q.DesktopApp {
     super();
     logger.info("My refresh is: " + this.getRefreshInterval());
     this.pollingInterval = this.getRefreshInterval() * 60 * 1000;
+    logger.info("My pollingInterval is: " + this.pollingInterval);
   }
 
-  generateSignal(quote, oldPrice) {
+  generateSignal(price, oldPrice) {
     const currency = this.config.currency;
     const isMuted = this.config.isMuted;
-    //const refresh = this.config.refresh;
+    const refresh = this.getRefreshInterval();
+    logger.info("price: " + price);
+    logger.info("oldprice: " + oldPrice);
+    const latestPrice = price.data.amount * 1;
     const previousClose = oldPrice.data.amount * 1;
-    const latestPrice = quote.data.amount * 1;
 
     const change = formatChange((latestPrice - previousClose));
     const changePercent = formatChange(change / previousClose * 100);
@@ -67,7 +71,8 @@ class CryptoWatch extends q.DesktopApp {
       name: 'Current ' + currency +' Price',
       message:
         `${currency.substr(currency.length -3)} ${latestPrice} (${change} ${changePercent}%)` +
-        `<br/>Previous close: ${previousClose}`,
+        `<br/>Previous close: ${previousClose}` +
+        `<br/>My refresh is: ${refresh}`,
       isMuted: !isMuted  
     });
   }
@@ -79,18 +84,9 @@ class CryptoWatch extends q.DesktopApp {
     logger.info("My refresh2 is: " + refresh);
     if (currency) {
       logger.info("My currency is: " + currency);
-      return getOldQuote(currency, refresh).then(oldQuote => {
-        return getQuote(currency).then(quote => {
-          return this.generateSignal(quote, oldQuote);
-      })}).catch((error) => {
-        logger.error("Error getting price:" + error);
-        if(`${error.message}`.includes("getaddrinfo")){
-          return q.Signal.error(
-            'Coinbase returned an error. <b>Please check your internet connection</b>.'
-          );
-        }
-        return q.Signal.error([`Coinbase returned an error. Detail: ${error}`]);
-      })
+      var oldPrice = await getOldPrice(currency, refresh)
+      var price = await getPrice(currency)
+      return this.generateSignal(price, oldPrice);
     } else {
       logger.info("No currency pair configured.");
       return null;
@@ -99,11 +95,8 @@ class CryptoWatch extends q.DesktopApp {
 
   async applyConfig() {
     const currency = this.config.currency;
-    //const refresh = this.config.refresh;
-    //logger.info("My refresh is: " + refresh);
-    //console.log('LOOK: ' + this.config.refresh);
     if (currency) {
-      return getQuote(currency).then((response) => {
+      return getPrice(currency).then((response) => {
         return true;
       }).catch((error) => {
         throw new Error("Error validating currency pair: " + currency, error);
@@ -119,8 +112,8 @@ class CryptoWatch extends q.DesktopApp {
 
 module.exports = {
   formatChange: formatChange,
-  getQuote: getQuote,
-  getOldQuote: getOldQuote,
+  getPrice: getPrice,
+  getOldPrice: getOldPrice,
   CryptoWatch: CryptoWatch
 }
 
