@@ -15,18 +15,18 @@ describe('getPrice', function () {
   })
 });
 
-describe('getOldPrice', function () {
-  it('can get an old price', function () {
-    return t.getOldPrice(currency, refresh).then((price) => {
-      console.info("oldPriceRefresh: " + refresh);
-      assert.ok(price, 'Error in price.');
-      assert.equal(currency, price.data.base + '-' + price.data.currency, 'Currency does not match: ' + currency);
-      assert.ok(price.data.amount, 'Error getting latestPrice.');
-    }).catch((error) => {
-      assert.fail(error);
-    })
-  })
-});
+// describe('getOldPrice', function () {
+//   it('can get an old price', function () {
+//     return t.getOldPrice(currency, refresh).then((price) => {
+//       console.info("oldPriceRefresh: " + refresh);
+//       assert.ok(price, 'Error in price.');
+//       assert.equal(currency, price.data.base + '-' + price.data.currency, 'Currency does not match: ' + currency);
+//       assert.ok(price.data.amount, 'Error getting latestPrice.');
+//     }).catch((error) => {
+//       assert.fail(error);
+//     })
+//   })
+// });
 
 describe('formatChange', function () {
   it('handles negative numbers', function () {
@@ -93,6 +93,20 @@ describe('CryptoWatch', () => {
 
   describe('#run()', () => {
     it('can run', async function () {
+      return buildApp().then(app => {
+        return app.run().then((signal) => {
+          assert.ok(signal);
+          assert(signal.name.includes(currency));
+          assert(signal.message.includes(currency.substr(currency.length -3)));
+        }).catch((error) => {
+          assert.fail(error)
+        });
+      });
+    });
+  });
+
+  describe('#run2()', () => {
+    it('can run2', async function () {
       return buildApp().then(app => {
         return app.run().then((signal) => {
           assert.ok(signal);
