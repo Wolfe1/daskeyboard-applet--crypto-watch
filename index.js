@@ -13,18 +13,16 @@ async function getPrice(currency) {
   return data;
 }
 
-// async function getOldPrice(currency, refreshInterval) {
-//   var dt = new Date();
-//   logger.info("My refresh is TOTALLY: " + refreshInterval);
-//   dt.setMinutes(dt.getMinutes() - refreshInterval);
-//   var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
-//   logger.info("My url is: " + pastUrl);
-//   var data2 = await request.get({
-//     url: pastUrl,
-//     json: true
-//   });
-//   return data2;
-// }
+async function getDailyPrice(currency) {
+  var dt = new Date();
+  var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
+  logger.info("My url is: " + pastUrl);
+  var data2 = await request.get({
+    url: pastUrl,
+    json: true
+  });
+  return data2.data.amount;
+}
 
 function round(number) {
   return number.toFixed(2);
@@ -42,18 +40,13 @@ function setLastPrice(price) {
   localStorage.setItem("lastPrice", price);
 }
 
-function getLastPrice() {
+function getLastPrice(currency) {
   logger.info("local storage: " + localStorage.getItem("lastPrice"));
   if (localStorage.getItem("lastPrice") != null) {
     return localStorage.getItem("lastPrice");
   } else {
-    return {  
-      "data":{  
-         "base":"BTC",
-         "currency":"USD",
-         "amount":"7882.825"
-      }
-    };
+    // If no price is stored then return todays spot price
+    return getDailyPrice(currency);
   }
 }
 
@@ -70,10 +63,11 @@ class CryptoWatch extends q.DesktopApp {
     const currency = this.config.currency;
     const isMuted = this.config.isMuted;
     const refresh = this.getRefreshInterval();
+    const storedItem = localStorage.getItem("lastPrice");
     logger.info("price: " + price);
     // logger.info("oldprice: " + oldPrice);
     const latestPrice = price.data.amount * 1;
-    const previousClose = oldPrice.data.amount * 1;
+    const previousClose = oldPrice * 1;
 
     const change = formatChange((latestPrice - previousClose));
     const changePercent = formatChange(change / previousClose * 100);
@@ -91,8 +85,9 @@ class CryptoWatch extends q.DesktopApp {
       name: 'Current ' + currency +' Price',
       message:
         `${currency.substr(currency.length -3)} ${latestPrice} (${change} ${changePercent}%)` +
-        `<br/>Previous close: ${previousClose}` +
-        `<br/>My refresh is: ${refresh}`,
+        `\nPrevious close: ${previousClose}` +
+        `\nMy refresh is: ${refresh}` +
+        `\nStored data: ${storedItem}`,
       isMuted: !isMuted  
     });
   }
@@ -104,9 +99,9 @@ class CryptoWatch extends q.DesktopApp {
     logger.info("My refresh2 is: " + refresh);
     if (currency) {
       logger.info("My currency is: " + currency);
-      var oldPrice = await getLastPrice();
+      var oldPrice = await getLastPrice(currency);
       var price = await getPrice(currency);
-      setLastPrice(price);
+      setLastPrice(price.data.amount);
       logger.info("local storage 2: " + localStorage.getItem("lastPrice"));
       return this.generateSignal(price, oldPrice);
     } else {
@@ -135,7 +130,7 @@ class CryptoWatch extends q.DesktopApp {
 module.exports = {
   formatChange: formatChange,
   getPrice: getPrice,
-  // getOldPrice: getOldPrice,
+  getDailyPrice: getDailyPrice,
   CryptoWatch: CryptoWatch
 }
 

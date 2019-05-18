@@ -15,18 +15,16 @@ describe('getPrice', function () {
   })
 });
 
-// describe('getOldPrice', function () {
-//   it('can get an old price', function () {
-//     return t.getOldPrice(currency, refresh).then((price) => {
-//       console.info("oldPriceRefresh: " + refresh);
-//       assert.ok(price, 'Error in price.');
-//       assert.equal(currency, price.data.base + '-' + price.data.currency, 'Currency does not match: ' + currency);
-//       assert.ok(price.data.amount, 'Error getting latestPrice.');
-//     }).catch((error) => {
-//       assert.fail(error);
-//     })
-//   })
-// });
+describe('getDailyPrice', function () {
+  it('Can get the daily spot price', function () {
+    return t.getDailyPrice(currency).then((price) => {
+      console.info("oldPriceRefresh: " + refresh);
+      assert.ok(price, 'Error in price.');
+    }).catch((error) => {
+      assert.fail(error);
+    })
+  })
+});
 
 describe('formatChange', function () {
   it('handles negative numbers', function () {
@@ -76,10 +74,10 @@ describe('CryptoWatch', () => {
   });
 
   describe('#generateSignal(price)', function () {
-    it('generates the price', function () {
+    it('generates the price signal', function () {
       return buildApp().then(app => {
         const price = require('./test-price.json');
-        const oldPrice = require('./test-price-old.json');
+        const oldPrice = 6482.825;
         const signal = app.generateSignal(price, oldPrice);
         assert.ok(signal);
         assert(signal.message.includes('USD'));
