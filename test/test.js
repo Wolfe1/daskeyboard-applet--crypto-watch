@@ -2,6 +2,7 @@ const assert = require('assert');
 const t = require('../index');
 const currency = 'BTC-USD';
 const refresh = 60;
+const decimals = 2
 
 describe('getPrice', function () {
   it('can get a price', function () {
@@ -28,19 +29,24 @@ describe('getDailyPrice', function () {
 
 describe('formatChange', function () {
   it('handles negative numbers', function () {
-    assert.equal('-1.50', t.formatChange(-1.5));
-    assert.equal('-1.00', t.formatChange(-1.0));
-    assert.equal('-1.00', t.formatChange(-1));
+    assert.equal('-1.50', t.formatChange(-1.5, decimals));
+    assert.equal('-1.00', t.formatChange(-1.0, decimals));
+    assert.equal('-1.00', t.formatChange(-1, decimals));
   });
 
   it('handles 0', function () {
-    assert.equal('+0.00', t.formatChange(0));
-    assert.equal('+0.00', t.formatChange(0.0000));
+    assert.equal('+0.00', t.formatChange(0, decimals));
+    assert.equal('+0.00', t.formatChange(0.0000, decimals));
   });
 
   it('handles positive numbers', function () {
-    assert.equal('+1.49', t.formatChange(1.49));
-    assert.equal('+1.49', t.formatChange(1.4900032));
+    assert.equal('+1.49', t.formatChange(1.49, decimals));
+    assert.equal('+1.49', t.formatChange(1.4900032, decimals));
+  });
+
+  it('handles more decimal places', function () {
+    assert.equal('+1.4954', t.formatChange(1.49543, 4));
+    assert.equal('+1.4900', t.formatChange(1.4900032, 4));
   });
 });
 
@@ -81,8 +87,8 @@ describe('CryptoWatch', () => {
         const signal = app.generateSignal(price, oldPrice);
         assert.ok(signal);
         assert(signal.message.includes('USD'));
-        assert(signal.message.includes('7882.825'));
-        assert(signal.message.includes('Previous close: 6482.825'));
+        assert(signal.message.includes('7882.82'));
+        assert(signal.message.includes('Previous close: 6482.82'));
         assert(signal.message.includes('+1400.00'));
         assert(signal.message.includes('+21.60%'));
       })

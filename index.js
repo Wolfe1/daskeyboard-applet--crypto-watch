@@ -1,7 +1,7 @@
 const q = require('daskeyboard-applet');
 const request = require('request-promise');
 const logger = q.logger;
-var localStorage = require('localStorage')
+const localStorage = require('localStorage')
 
 const apiUrl = 'https://api.coinbase.com/v2/prices/';
 
@@ -16,36 +16,36 @@ async function getPrice(currency) {
 async function getDailyPrice(currency) {
   var dt = new Date();
   var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
-  logger.info("My url is: " + pastUrl);
-  var data2 = await request.get({
+  var data = await request.get({
     url: pastUrl,
     json: true
   });
-  return data2.data.amount;
+  return data.data.amount;
 }
 
-function round(number) {
-  return number.toFixed(2);
+function round(number, decimals) {
+  return number.toFixed(decimals);
 }
 
-function formatChange(number) {
+function formatChange(number, decimals) {
   if (number >= 0) {
-    return `+${round(number)}`;
+    return `+${round(number, decimals)}`;
   } else {
-    return `${round(number)}`;
+    return `${round(number, decimals)}`;
   }
 }
 
+//Store price obtained from last update
 function setLastPrice(price) {
   localStorage.setItem("lastPrice", price);
 }
 
+//Retrieve stored price data from last update
 function getLastPrice(currency) {
-  logger.info("local storage: " + localStorage.getItem("lastPrice"));
   if (localStorage.getItem("lastPrice") != null) {
     return localStorage.getItem("lastPrice");
   } else {
-    // If no price is stored then return todays spot price
+    //If no price is stored then return today's spot price
     return getDailyPrice(currency);
   }
 }
@@ -54,23 +54,18 @@ class CryptoWatch extends q.DesktopApp {
 
   constructor() {
     super();
-    logger.info("My refresh is: " + this.getRefreshInterval());
     this.pollingInterval = this.getRefreshInterval() * 60 * 1000;
-    logger.info("My pollingInterval is: " + this.pollingInterval);
   }
 
   generateSignal(price, oldPrice) {
-    const currency = this.config.currency;
+    const currency = this.config.currency.toUpperCase();
     const isMuted = this.config.isMuted;
-    const refresh = this.getRefreshInterval();
-    const storedItem = localStorage.getItem("lastPrice");
-    logger.info("price: " + price);
-    // logger.info("oldprice: " + oldPrice);
     const latestPrice = price.data.amount * 1;
     const previousClose = oldPrice * 1;
+    const decimals = this.getDecimalPlaces();
 
-    const change = formatChange((latestPrice - previousClose));
-    const changePercent = formatChange(change / previousClose * 100);
+    const change = formatChange((latestPrice - previousClose), decimals);
+    const changePercent = formatChange((change / previousClose * 100), decimals);
 
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
     
@@ -84,25 +79,21 @@ class CryptoWatch extends q.DesktopApp {
       },
       name: 'Current ' + currency +' Price',
       message:
-        `${currency.substr(currency.length -3)} ${latestPrice} (${change} ${changePercent}%)` +
-        `\nPrevious close: ${previousClose}` +
-        `\nMy refresh is: ${refresh}` +
-        `\nStored data: ${storedItem}`,
+        `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
+        `\nPrevious close: ${round(previousClose, decimals)}`,
       isMuted: !isMuted  
     });
   }
 
   async run() {
     logger.info("Crypto Watch Running.");
-    const currency = this.config.currency;
+    const currency = this.config.currency.toUpperCase();
     const refresh = this.getRefreshInterval();
-    logger.info("My refresh2 is: " + refresh);
     if (currency) {
       logger.info("My currency is: " + currency);
       var oldPrice = await getLastPrice(currency);
       var price = await getPrice(currency);
       setLastPrice(price.data.amount);
-      logger.info("local storage 2: " + localStorage.getItem("lastPrice"));
       return this.generateSignal(price, oldPrice);
     } else {
       logger.info("No currency pair configured.");
@@ -111,7 +102,7 @@ class CryptoWatch extends q.DesktopApp {
   }
 
   async applyConfig() {
-    const currency = this.config.currency;
+    const currency = this.config.currency.toUpperCase();
     if (currency) {
       return getPrice(currency).then((response) => {
         return true;
@@ -122,7 +113,13 @@ class CryptoWatch extends q.DesktopApp {
   }
 
   getRefreshInterval() {
+    //Return the refresh rate from the config, defaults to 15 minutes
 		return this.config.refresh ? this.config.refresh : 15;
+  }
+  
+  getDecimalPlaces() {
+    //Return the decimal places for calculation and display, defaults to 2
+		return this.config.decimals ? this.config.decimals : 2;
 	}
 }
 
