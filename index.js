@@ -1,7 +1,7 @@
 const q = require('daskeyboard-applet');
 const request = require('request-promise');
+const localStorage = require('localStorage');
 const logger = q.logger;
-const localStorage = require('localStorage')
 
 const apiUrl = 'https://api.coinbase.com/v2/prices/';
 
@@ -15,19 +15,20 @@ async function getPrice(currency) {
 
 async function getDailyPrice(currency) {
   var dt = new Date();
-  var pastUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
+  var dailyUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
   var data = await request.get({
-    url: pastUrl,
+    url: dailyUrl,
     json: true
   });
   return data.data.amount;
 }
 
 function round(number, decimals) {
-  return number.toFixed(decimals);
+  return (number * 1).toFixed(decimals);
 }
 
 function formatChange(number, decimals) {
+  number = number * 1;
   if (number >= 0) {
     return `+${round(number, decimals)}`;
   } else {
@@ -35,17 +36,17 @@ function formatChange(number, decimals) {
   }
 }
 
-//Store price obtained from last update
+// Store price obtained from last update
 function setLastPrice(price) {
   localStorage.setItem("lastPrice", price);
 }
 
-//Retrieve stored price data from last update
+// Retrieve stored price data from last update
 function getLastPrice(currency) {
   if (localStorage.getItem("lastPrice") != null) {
     return localStorage.getItem("lastPrice");
   } else {
-    //If no price is stored then return today's spot price
+    // If no price is stored then return today's spot price
     return getDailyPrice(currency);
   }
 }
@@ -53,15 +54,15 @@ function getLastPrice(currency) {
 class CryptoWatch extends q.DesktopApp {
 
   constructor() {
-    super();
+    super(); 
     this.pollingInterval = this.getRefreshInterval() * 60 * 1000;
   }
 
   generateSignal(price, oldPrice) {
     const currency = this.config.currency.toUpperCase();
     const isMuted = this.config.isMuted;
-    const latestPrice = price.data.amount * 1;
-    const previousClose = oldPrice * 1;
+    const latestPrice = price.data.amount;
+    const previousClose = oldPrice;
     const decimals = this.getDecimalPlaces();
 
     const change = formatChange((latestPrice - previousClose), decimals);
@@ -88,7 +89,6 @@ class CryptoWatch extends q.DesktopApp {
   async run() {
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency.toUpperCase();
-    const refresh = this.getRefreshInterval();
     if (currency) {
       logger.info("My currency is: " + currency);
       var oldPrice = await getLastPrice(currency);
@@ -102,9 +102,9 @@ class CryptoWatch extends q.DesktopApp {
   }
 
   async applyConfig() {
-    const currency = this.config.currency.toUpperCase();
+    const currency = this.config.currency;
     if (currency) {
-      return getPrice(currency).then((response) => {
+      return getPrice(currency).then(() => {
         return true;
       }).catch((error) => {
         throw new Error("Error validating currency pair: " + currency, error);
@@ -122,7 +122,6 @@ class CryptoWatch extends q.DesktopApp {
 		return this.config.decimals ? this.config.decimals : 2;
 	}
 }
-
 
 module.exports = {
   formatChange: formatChange,

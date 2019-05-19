@@ -2,7 +2,7 @@
   "name": "daskeyboard-applet--crypto-watch",
   "displayName": "Crypto Watch",
   "version": "1.0.0",
-  "description": "Displays your crypto/currency pair price per time period set",
+  "description": "Displays cryptocurrency prices.",
   "longDescription": "Monitor your favorite cryptocurrecny prices.",
   "officialProductName": "Crypto Watch",
   "appUrl": "",
@@ -46,7 +46,7 @@
       {
         "key": "currency",
         "label": "Enter currency pair here",
-        "help": "Ex: LTC-USD, ETH-EUR, BCH-BTC",
+        "help": "Ex: LTC-USD, ETH-EUR, BAT-USD",
         "required": true,
         "order": 1,
         "controlType": "textbox",
@@ -55,7 +55,7 @@
       {
         "key": "decimals",
         "label": "How many decimal places for calculations and display?",
-        "placeholder": "2",
+        "value": "2",
         "required": true,
         "order": 2,
         "controlType": "textbox"

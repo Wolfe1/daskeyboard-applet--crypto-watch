@@ -2,10 +2,11 @@ const assert = require('assert');
 const t = require('../index');
 const currency = 'BTC-USD';
 const refresh = 60;
-const decimals = 2
+const decimals = 2;
+const isMuted = true;
 
 describe('getPrice', function () {
-  it('can get a price', function () {
+  it('Can get the current price', function () {
     return t.getPrice(currency).then((price) => {
       assert.ok(price, 'Error in price.');
       assert.equal(currency, price.data.base + '-' + price.data.currency, 'Currency does not match: ' + currency);
@@ -19,7 +20,6 @@ describe('getPrice', function () {
 describe('getDailyPrice', function () {
   it('Can get the daily spot price', function () {
     return t.getDailyPrice(currency).then((price) => {
-      console.info("oldPriceRefresh: " + refresh);
       assert.ok(price, 'Error in price.');
     }).catch((error) => {
       assert.fail(error);
@@ -28,23 +28,23 @@ describe('getDailyPrice', function () {
 });
 
 describe('formatChange', function () {
-  it('handles negative numbers', function () {
+  it('Can handle negative numbers', function () {
     assert.equal('-1.50', t.formatChange(-1.5, decimals));
     assert.equal('-1.00', t.formatChange(-1.0, decimals));
     assert.equal('-1.00', t.formatChange(-1, decimals));
   });
 
-  it('handles 0', function () {
+  it('Can handle 0', function () {
     assert.equal('+0.00', t.formatChange(0, decimals));
     assert.equal('+0.00', t.formatChange(0.0000, decimals));
   });
 
-  it('handles positive numbers', function () {
+  it('Can handle positive numbers', function () {
     assert.equal('+1.49', t.formatChange(1.49, decimals));
     assert.equal('+1.49', t.formatChange(1.4900032, decimals));
   });
 
-  it('handles more decimal places', function () {
+  it('Can handle more decimal places', function () {
     assert.equal('+1.4954', t.formatChange(1.49543, 4));
     assert.equal('+1.4900', t.formatChange(1.4900032, 4));
   });
@@ -52,7 +52,7 @@ describe('formatChange', function () {
 
 describe('CryptoWatch', () => {
   describe('#applyConfig()', () => {
-    it('can apply a valid config', () => {
+    it('Can apply a valid config', () => {
       let app = new t.CryptoWatch();
       app.config = {
         currency: currency,
@@ -65,7 +65,7 @@ describe('CryptoWatch', () => {
         fail(error);
       })
     });
-    it('can detect an invalid config', () => {
+    it('Can detect an invalid config', () => {
       let failApp = new t.CryptoWatch();
       failApp.config = {
         currency: 'FOOBARRR'
@@ -80,7 +80,7 @@ describe('CryptoWatch', () => {
   });
 
   describe('#generateSignal(price)', function () {
-    it('generates the price signal', function () {
+    it('Can generate the price signal', function () {
       return buildApp().then(app => {
         const price = require('./test-price.json');
         const oldPrice = 6482.825;
@@ -96,7 +96,7 @@ describe('CryptoWatch', () => {
   });
 
   describe('#run()', () => {
-    it('can run', async function () {
+    it('Can run the app', async function () {
       return buildApp().then(app => {
         return app.run().then((signal) => {
           assert.ok(signal);
@@ -107,10 +107,7 @@ describe('CryptoWatch', () => {
         });
       });
     });
-  });
-
-  describe('#run2()', () => {
-    it('can run2', async function () {
+    it('Can run the app a second time', async function () {
       return buildApp().then(app => {
         return app.run().then((signal) => {
           assert.ok(signal);
@@ -134,7 +131,8 @@ const baseConfig = {
     user: {
       currency: currency,
       refresh: refresh,
-      isMuted: true
+      decimals: decimals,
+      isMuted: isMuted
     }
   }
 };
