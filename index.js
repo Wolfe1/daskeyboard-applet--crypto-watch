@@ -39,6 +39,7 @@ function formatChange(number, decimals) {
 // Store price obtained from last update
 function setLastPrice(price) {
   localStorage.setItem("lastPrice", price);
+  return true;
 }
 
 // Retrieve stored price data from last update
@@ -127,6 +128,8 @@ module.exports = {
   formatChange: formatChange,
   getPrice: getPrice,
   getDailyPrice: getDailyPrice,
+  setLastPrice: setLastPrice,
+  getLastPrice: getLastPrice,
   CryptoWatch: CryptoWatch
 }
 
