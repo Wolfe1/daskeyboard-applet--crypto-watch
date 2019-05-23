@@ -1,7 +1,7 @@
 const assert = require('assert');
 const t = require('../index');
 const currency = 'BTC-USD';
-const refresh = 60;
+const refresh = 4320;
 const decimals = 2;
 const isMuted = true;
 
@@ -19,7 +19,7 @@ describe('getPrice', function () {
 
 describe('getDailyPrice', function () {
   it('Can get the daily spot price', function () {
-    return t.getDailyPrice(currency).then((price) => {
+    return t.getDailyPrice(currency, refresh).then((price) => {
       assert.ok(price, 'Error in price.');
     }).catch((error) => {
       assert.fail(error);
@@ -52,14 +52,14 @@ describe('formatChange', function () {
 
 describe('localStorage', function () {
   it('Can get price when none is stored', function () {
-    assert.ok(t.getLastPrice('BTC-USD'), 'Error getting price when none is stored.');
+    assert.ok(t.getLastPrice('BTC-USD', refresh), 'Error getting price when none is stored.');
   }),
   it('Can set current price', function () {
       assert.ok(t.setLastPrice('100'), 'Error storing price.');
   }),
   it('Can get current price', function () {
-      assert.ok(t.getLastPrice('BTC-USD'), 'Error getting price.');
-      assert.equal(t.getLastPrice('BTC-USD'), 100, 'Price does not match: ' + t.getLastPrice('BTC-USD'));
+      assert.ok(t.getLastPrice('BTC-USD', refresh), 'Error getting price.');
+      assert.equal(t.getLastPrice('BTC-USD', refresh), 100, 'Price does not match: ' + t.getLastPrice('BTC-USD', refresh));
   })
 });
 
@@ -115,7 +115,7 @@ describe('CryptoWatch', () => {
           assert.ok(signal);
           assert(signal.name.includes(currency));
           assert(signal.message.includes(currency.substr(currency.length -3)));
-          assert.equal(app.getRefreshInterval(), 60);
+          assert.equal(app.getRefreshInterval(), refresh);
           assert.equal(app.getDecimalPlaces(), 2);
         }).catch((error) => {
           assert.fail(error)

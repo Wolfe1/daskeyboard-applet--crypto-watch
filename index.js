@@ -1,6 +1,7 @@
 const q = require('daskeyboard-applet');
 const request = require('request-promise');
 const localStorage = require('localStorage');
+const moment = require('moment');
 const logger = q.logger;
 
 const apiUrl = 'https://api.coinbase.com/v2/prices/';
@@ -13,9 +14,13 @@ async function getPrice(currency) {
   return data;
 }
 
-async function getDailyPrice(currency) {
-  var dt = new Date();
-  var dailyUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
+async function getDailyPrice(currency, refreshInterval) {
+  var dt = moment().subtract(refreshInterval, 'minutes').format();
+  //var dt = new Date().valueOf();
+  //dt = new Date(dt - (refreshInterval * 60000));
+  //dt.setMinutes(dt.getMinutes() - refreshInterval);
+  var dailyUrl = apiUrl + currency + '/spot?date=' + dt;
+  logger.info("url: " + dailyUrl);
   var data = await request.get({
     url: dailyUrl,
     json: true
@@ -43,12 +48,12 @@ function setLastPrice(price) {
 }
 
 // Retrieve stored price data from last update
-function getLastPrice(currency) {
+function getLastPrice(currency, refreshInterval) {
   if (localStorage.getItem("lastPrice") != null) {
     return localStorage.getItem("lastPrice");
   } else {
-    // If no price is stored then return today's spot price
-    return getDailyPrice(currency);
+    // If no price is stored then return spot price based on refresh time (days).
+    return getDailyPrice(currency, refreshInterval);
   }
 }
 
@@ -65,11 +70,15 @@ class CryptoWatch extends q.DesktopApp {
     const latestPrice = price.data.amount;
     const previousClose = oldPrice;
     const decimals = this.getDecimalPlaces();
+    var action = 'DRAW';
 
     const change = formatChange((latestPrice - previousClose), decimals);
     const changePercent = formatChange((change / previousClose * 100), decimals);
 
-    const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
+    var color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
+    if (change < -5) { action = 'FLASH' } else
+    if (change > 5) { action = 'FLASH' }
+
     
     return new q.Signal({
       points: [
@@ -83,7 +92,8 @@ class CryptoWatch extends q.DesktopApp {
       message:
         `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
         `\nPrevious close: ${round(previousClose, decimals)}`,
-      isMuted: !isMuted  
+      isMuted: !isMuted,
+      action: action
     });
   }
 
@@ -92,7 +102,7 @@ class CryptoWatch extends q.DesktopApp {
     const currency = this.config.currency.toUpperCase();
     if (currency) {
       logger.info("My currency is: " + currency);
-      var oldPrice = await getLastPrice(currency);
+      var oldPrice = await getLastPrice(currency, this.getRefreshInterval());
       var price = await getPrice(currency);
       setLastPrice(price.data.amount);
       return this.generateSignal(price, oldPrice);

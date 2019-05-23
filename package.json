@@ -25,7 +25,8 @@
   "dependencies": {
     "daskeyboard-applet": "^2.11.1",
     "yarn": "^1.16.0",
-    "localStorage": "^1.0.4"
+    "localStorage": "^1.0.4",
+    "moment": "2.24.0"
   },
   "engines": {
     "das-keyboard-q": "3.2.4"
@@ -84,7 +85,19 @@
           "value": "30 Minutes"
         }, {
           "key": "60",
-          "value": "60 Minutes"
+          "value": "1 Hour"
+        }, {
+          "key": "360",
+          "value": "6 Hours"
+        }, {
+          "key": "720",
+          "value": "12 Hours"
+        }, {
+          "key": "1440",
+          "value": "1 Day"
+        }, {
+          "key": "10080",
+          "value": "7 Days"
         }]
       },
       {
