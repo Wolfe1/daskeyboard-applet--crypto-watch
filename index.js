@@ -61,7 +61,7 @@ class CryptoWatch extends q.DesktopApp {
 
   constructor() {
     super(); 
-    this.pollingInterval = this.getRefreshInterval() * 60 * 1000;
+    this.pollingInterval = this.getRefreshInterval() * 60000;
   }
 
   generateSignal(price, oldPrice) {
@@ -70,19 +70,23 @@ class CryptoWatch extends q.DesktopApp {
     const latestPrice = price.data.amount;
     const previousClose = oldPrice;
     const decimals = this.getDecimalPlaces();
-    var action = 'DRAW';
 
     const change = formatChange((latestPrice - previousClose), decimals);
     const changePercent = formatChange((change / previousClose * 100), decimals);
 
-    var color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
-    if (change < -5) { action = 'FLASH' } else
-    if (change > 5) { action = 'FLASH' }
+    const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
+    var point = [new q.Point(color)];
+    if (changePercent < -1) { 
+      point = [new q.Point(color, q.Effects.BREATHE)]; 
+    }
+    if (changePercent > 1) { 
+      point = [new q.Point(color, q.Effects.BREATHE)]; 
+    }
 
     
     return new q.Signal({
       points: [
-        [new q.Point(color)]
+        point
       ],
       link: {
         url:  'www.coinbase.com',
@@ -92,8 +96,7 @@ class CryptoWatch extends q.DesktopApp {
       message:
         `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
         `\nPrevious close: ${round(previousClose, decimals)}`,
-      isMuted: !isMuted,
-      action: action
+      isMuted: !isMuted
     });
   }
 
