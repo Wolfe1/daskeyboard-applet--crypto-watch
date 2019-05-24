@@ -16,9 +16,6 @@ async function getPrice(currency) {
 
 async function getDailyPrice(currency, refreshInterval) {
   var dt = moment().subtract(refreshInterval, 'minutes').format();
-  //var dt = new Date().valueOf();
-  //dt = new Date(dt - (refreshInterval * 60000));
-  //dt.setMinutes(dt.getMinutes() - refreshInterval);
   var dailyUrl = apiUrl + currency + '/spot?date=' + dt;
   logger.info("url: " + dailyUrl);
   var data = await request.get({
@@ -61,7 +58,6 @@ class CryptoWatch extends q.DesktopApp {
 
   constructor() {
     super(); 
-    this.pollingInterval = this.getRefreshInterval() * 60000;
   }
 
   generateSignal(price, oldPrice) {
@@ -73,13 +69,14 @@ class CryptoWatch extends q.DesktopApp {
 
     const change = formatChange((latestPrice - previousClose), decimals);
     const changePercent = formatChange((change / previousClose * 100), decimals);
+    const refreshRate = this.getRefreshInterval();
 
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
     var point = [new q.Point(color)];
-    if (changePercent < -1) { 
+    if (changePercent < -5) { 
       point = [new q.Point(color, q.Effects.BREATHE)]; 
     }
-    if (changePercent > 1) { 
+    if (changePercent > 5) { 
       point = [new q.Point(color, q.Effects.BREATHE)]; 
     }
 
@@ -92,15 +89,17 @@ class CryptoWatch extends q.DesktopApp {
         url:  'www.coinbase.com',
         label: 'Show on Coinbase',
       },
-      name: 'Current ' + currency +' Price',
+      name: currency +' Price',
       message:
         `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
-        `\nPrevious close: ${round(previousClose, decimals)}`,
+        `<br>Previous close: ${round(previousClose, decimals)}` +
+        `<br>Refresh Rate (Minutes): ${refreshRate}`,
       isMuted: !isMuted
     });
   }
 
   async run() {
+    this.pollingInterval = this.getRefreshInterval() * 60000;
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency.toUpperCase();
     if (currency) {
