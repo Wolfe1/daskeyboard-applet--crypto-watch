@@ -1,6 +1,7 @@
 const q = require('daskeyboard-applet');
 const request = require('request-promise');
 const localStorage = require('localStorage');
+const moment = require('moment');
 const logger = q.logger;
 
 const apiUrl = 'https://api.coinbase.com/v2/prices/';
@@ -13,9 +14,10 @@ async function getPrice(currency) {
   return data;
 }
 
-async function getDailyPrice(currency) {
-  var dt = new Date();
-  var dailyUrl = apiUrl + currency + '/spot?date=' + dt.toJSON();
+async function getDailyPrice(currency, refreshInterval) {
+  var dt = moment().subtract(refreshInterval, 'minutes').format();
+  var dailyUrl = apiUrl + currency + '/spot?date=' + dt;
+  logger.info("url: " + dailyUrl);
   var data = await request.get({
     url: dailyUrl,
     json: true
@@ -43,12 +45,12 @@ function setLastPrice(price) {
 }
 
 // Retrieve stored price data from last update
-function getLastPrice(currency) {
+function getLastPrice(currency, refreshInterval) {
   if (localStorage.getItem("lastPrice") != null) {
     return localStorage.getItem("lastPrice");
   } else {
-    // If no price is stored then return today's spot price
-    return getDailyPrice(currency);
+    // If no price is stored then return spot price based on refresh time (days).
+    return getDailyPrice(currency, refreshInterval);
   }
 }
 
@@ -56,7 +58,6 @@ class CryptoWatch extends q.DesktopApp {
 
   constructor() {
     super(); 
-    this.pollingInterval = this.getRefreshInterval() * 60 * 1000;
   }
 
   generateSignal(price, oldPrice) {
@@ -68,31 +69,42 @@ class CryptoWatch extends q.DesktopApp {
 
     const change = formatChange((latestPrice - previousClose), decimals);
     const changePercent = formatChange((change / previousClose * 100), decimals);
+    const refreshRate = this.getRefreshInterval();
 
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
+    var point = [new q.Point(color)];
+    if (changePercent < -5) { 
+      point = [new q.Point(color, q.Effects.BREATHE)]; 
+    }
+    if (changePercent > 5) { 
+      point = [new q.Point(color, q.Effects.BREATHE)]; 
+    }
+
     
     return new q.Signal({
       points: [
-        [new q.Point(color)]
+        point
       ],
       link: {
         url:  'www.coinbase.com',
         label: 'Show on Coinbase',
       },
-      name: 'Current ' + currency +' Price',
+      name: currency +' Price',
       message:
         `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
-        `\nPrevious close: ${round(previousClose, decimals)}`,
-      isMuted: !isMuted  
+        `\nPrevious Close: ${round(previousClose, decimals)}` +
+        `\nRefresh-Rate (Min): ${refreshRate}`,
+      isMuted: !isMuted
     });
   }
 
   async run() {
+    this.pollingInterval = this.getRefreshInterval() * 60000;
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency.toUpperCase();
     if (currency) {
       logger.info("My currency is: " + currency);
-      var oldPrice = await getLastPrice(currency);
+      var oldPrice = await getLastPrice(currency, this.getRefreshInterval());
       var price = await getPrice(currency);
       setLastPrice(price.data.amount);
       return this.generateSignal(price, oldPrice);

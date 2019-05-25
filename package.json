@@ -25,7 +25,8 @@
   "dependencies": {
     "daskeyboard-applet": "^2.11.1",
     "yarn": "^1.16.0",
-    "localStorage": "^1.0.4"
+    "localStorage": "^1.0.4",
+    "moment": "2.24.0"
   },
   "engines": {
     "das-keyboard-q": "3.2.4"
@@ -62,30 +63,12 @@
       },
       {
         "key": "refresh",
-        "label": "Refresh Interval",
+        "label": "Refresh Interval in Minutes",
         "help": "How often do you want to receive new data?",
+        "value": "60",
         "required": true,
         "order": 3,
-        "controlType": "dropdown",
-        "options": [{
-          "key": "1",
-          "value": "1 Minute"
-        }, {
-          "key": "5",
-          "value": "5 Minutes"
-        }, {
-          "key": "10",
-          "value": "10 Minutes"
-        }, {
-          "key": "15",
-          "value": "15 Minutes"
-        }, {
-          "key": "30",
-          "value": "30 Minutes"
-        }, {
-          "key": "60",
-          "value": "60 Minutes"
-        }]
+        "controlType": "textbox"
       },
       {
         "key": "isMuted",
