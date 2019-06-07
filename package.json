@@ -71,11 +71,19 @@
         "controlType": "textbox"
       },
       {
+        "key": "threshold",
+        "label": "Threshold for a flashing alert (%)",
+        "value": "5",
+        "required": true,
+        "order": 4,
+        "controlType": "textbox"
+      },
+      {
         "key": "isMuted",
         "label": "Display alerts?",
         "help": "Display an alert window (bottom right of the screen) on each update?",
         "required": true,
-        "order": 4,
+        "order": 5,
         "controlType": "checkbox",
         "value": false
       }

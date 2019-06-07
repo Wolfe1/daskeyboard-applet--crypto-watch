@@ -63,6 +63,7 @@ class CryptoWatch extends q.DesktopApp {
   generateSignal(price, oldPrice) {
     const currency = this.config.currency.toUpperCase();
     const isMuted = this.config.isMuted;
+    const threshold = this.config.threshold;
     const latestPrice = price.data.amount;
     const previousClose = oldPrice;
     const decimals = this.getDecimalPlaces();
@@ -73,10 +74,10 @@ class CryptoWatch extends q.DesktopApp {
 
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
     var point = [new q.Point(color)];
-    if (changePercent < -5) { 
+    if (changePercent < -threshold) { 
       point = [new q.Point(color, q.Effects.BREATHE)]; 
     }
-    if (changePercent > 5) { 
+    if (changePercent > threshold) { 
       point = [new q.Point(color, q.Effects.BREATHE)]; 
     }
 

@@ -3,6 +3,7 @@ const t = require('../index');
 const currency = 'BTC-USD';
 const refresh = 4320;
 const decimals = 2;
+const threshold = 5;
 const isMuted = true;
 
 describe('getPrice', function () {
@@ -101,7 +102,7 @@ describe('CryptoWatch', () => {
         assert.ok(signal);
         assert(signal.message.includes('USD'));
         assert(signal.message.includes('7882.82'));
-        assert(signal.message.includes('Previous close: 6482.82'));
+        assert(signal.message.includes('Previous Close: 6482.82'));
         assert(signal.message.includes('+1400.00'));
         assert(signal.message.includes('+21.60%'));
       })
@@ -147,6 +148,7 @@ const baseConfig = {
       currency: currency,
       refresh: refresh,
       decimals: decimals,
+      threshold: threshold,
       isMuted: isMuted
     }
   }
