@@ -87,7 +87,7 @@ class CryptoWatch extends q.DesktopApp {
         point
       ],
       link: {
-        url:  'www.coinbase.com',
+        url:  'https://www.coinbase.com',
         label: 'Show on Coinbase',
       },
       name: currency +' Price',
