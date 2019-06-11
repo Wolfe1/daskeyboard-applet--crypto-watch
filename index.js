@@ -93,8 +93,10 @@ class CryptoWatch extends q.DesktopApp {
       name: currency +' Price',
       message:
         `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
-        `\nPrevious Close: ${round(previousClose, decimals)}` +
-        `\nRefresh-Rate (Min): ${refreshRate}`,
+        `<br>` +
+        `Previous Close: ${round(previousClose, decimals)}` +
+        `<br>` +
+        `Refresh-Rate (Min): ${refreshRate}`,
       isMuted: !isMuted
     });
   }
