@@ -74,10 +74,10 @@ class CryptoWatch extends q.DesktopApp {
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
     var point = [new q.Point(color)];
     if (changePercent < -threshold) { 
-      point = [new q.Point(color, q.Effects.BREATHE)]; 
+      point = [new q.Point(color, q.Effects.BLINK)]; 
     }
     if (changePercent > threshold) { 
-      point = [new q.Point(color, q.Effects.BREATHE)]; 
+      point = [new q.Point(color, q.Effects.BLINK)]; 
     }
 
     
