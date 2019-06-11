@@ -70,7 +70,6 @@ class CryptoWatch extends q.DesktopApp {
 
     const change = formatChange((latestPrice - previousClose), decimals);
     const changePercent = formatChange((change / previousClose * 100), decimals);
-    const refreshRate = this.getRefreshInterval();
 
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
     var point = [new q.Point(color)];
@@ -94,9 +93,7 @@ class CryptoWatch extends q.DesktopApp {
       message:
         `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} <b>(${change} ${changePercent}%)</b>` +
         "\n" +
-        `Previous Close: ${round(previousClose, decimals)}` +
-        "\n" +
-        `Refresh-Rate (Min): ${refreshRate}`,
+        `Previous Close: ${round(previousClose, decimals)}`,
       isMuted: !isMuted
     });
   }
