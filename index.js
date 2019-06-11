@@ -99,7 +99,6 @@ class CryptoWatch extends q.DesktopApp {
   }
 
   async run() {
-    this.pollingInterval = this.getRefreshInterval() * 60000;
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency.toUpperCase();
     if (currency) {
@@ -115,6 +114,9 @@ class CryptoWatch extends q.DesktopApp {
   }
 
   async applyConfig() {
+    logger.info("Crypto Watch Initialisation.");
+    this.pollingInterval = this.getRefreshInterval() * 60000;
+
     const currency = this.config.currency;
     if (currency) {
       return getPrice(currency).then(() => {
