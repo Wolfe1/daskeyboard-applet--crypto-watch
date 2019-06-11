@@ -92,7 +92,7 @@ class CryptoWatch extends q.DesktopApp {
       },
       name: currency +' Price',
       message:
-        `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
+        `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} <b>(${change} ${changePercent}%)</b>` +
         "\n" +
         `Previous Close: ${round(previousClose, decimals)}` +
         "\n" +
