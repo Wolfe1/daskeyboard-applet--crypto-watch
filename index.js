@@ -70,15 +70,14 @@ class CryptoWatch extends q.DesktopApp {
 
     const change = formatChange((latestPrice - previousClose), decimals);
     const changePercent = formatChange((change / previousClose * 100), decimals);
-    const refreshRate = this.getRefreshInterval();
 
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
     var point = [new q.Point(color)];
     if (changePercent < -threshold) { 
-      point = [new q.Point(color, q.Effects.BREATHE)]; 
+      point = [new q.Point(color, q.Effects.BLINK)]; 
     }
     if (changePercent > threshold) { 
-      point = [new q.Point(color, q.Effects.BREATHE)]; 
+      point = [new q.Point(color, q.Effects.BLINK)]; 
     }
 
     
@@ -87,20 +86,19 @@ class CryptoWatch extends q.DesktopApp {
         point
       ],
       link: {
-        url:  'www.coinbase.com',
+        url:  'https://www.coinbase.com',
         label: 'Show on Coinbase',
       },
       name: currency +' Price',
       message:
-        `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
-        `\nPrevious Close: ${round(previousClose, decimals)}` +
-        `\nRefresh-Rate (Min): ${refreshRate}`,
+        `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} <b>(${change} ${changePercent}%)</b>` +
+        "\n" +
+        `Previous Close: ${round(previousClose, decimals)}`,
       isMuted: !isMuted
     });
   }
 
   async run() {
-    this.pollingInterval = this.getRefreshInterval() * 60000;
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency.toUpperCase();
     if (currency) {
@@ -116,6 +114,9 @@ class CryptoWatch extends q.DesktopApp {
   }
 
   async applyConfig() {
+    logger.info("Crypto Watch Initialisation.");
+    this.pollingInterval = this.getRefreshInterval() * 60000;
+
     const currency = this.config.currency;
     if (currency) {
       return getPrice(currency).then(() => {

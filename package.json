@@ -63,7 +63,7 @@
       },
       {
         "key": "refresh",
-        "label": "Refresh Interval in Minutes",
+        "label": "Refresh interval in minutes",
         "help": "How often do you want to receive new data?",
         "value": "60",
         "required": true,
