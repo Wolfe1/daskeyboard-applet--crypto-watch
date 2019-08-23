@@ -24,9 +24,9 @@
   "readMeEndUserUrl": "README_ENDUSER.md",
   "dependencies": {
     "daskeyboard-applet": "^2.11.1",
-    "yarn": "^1.17.3",
     "localStorage": "^1.0.4",
-    "moment": "2.24.0"
+    "moment": "2.24.0",
+    "yarn": "^1.17.3"
   },
   "engines": {
     "das-keyboard-q": "3.2.4"
@@ -90,7 +90,7 @@
     ]
   },
   "devDependencies": {
-    "mocha": "^6.1.4",
-    "localStorage": "^1.0.4"
+    "localStorage": "^1.0.4",
+    "mocha": "^6.1.4"
   }
 }
