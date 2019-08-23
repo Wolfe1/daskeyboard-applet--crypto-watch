@@ -6,4 +6,4 @@ install:
 script:
   - yarn test
 after_success:
-  - coveralls
+  - yarn coverage | coveralls
