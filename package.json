@@ -60,24 +60,78 @@
         "value": "2",
         "required": true,
         "order": 2,
-        "controlType": "textbox"
+        "controlType": "dropdown",
+        "options": [{
+          "key": "0",
+          "value": "0"
+        }, {
+          "key": "1",
+          "value": "1"
+        }, {
+          "key": "2",
+          "value": "2"
+        }, {
+          "key": "3",
+          "value": "3"
+        }, {
+          "key": "4",
+          "value": "4"
+        }, {
+          "key": "5",
+          "value": "5"
+        }]
       },
       {
         "key": "refresh",
-        "label": "Refresh interval in minutes",
+        "label": "Refresh interval",
         "help": "How often do you want to receive new data?",
         "value": "60",
         "required": true,
         "order": 3,
-        "controlType": "textbox"
+        "controlType": "dropdown",
+        "options": [{
+          "key": "1",
+          "value": "1 Minute"
+        }, {
+          "key": "5",
+          "value": "5 Minutes"
+        }, {
+          "key": "10",
+          "value": "10 Minutes"
+        }, {
+          "key": "15",
+          "value": "15 Minutes"
+        }, {
+          "key": "30",
+          "value": "30 Minutes"
+        }, {
+          "key": "60",
+          "value": "60 Minutes"
+        }]
       },
       {
         "key": "threshold",
-        "label": "Threshold for a flashing alert (%)",
+        "label": "Threshold for a flashing alert",
         "value": "5",
         "required": true,
         "order": 4,
-        "controlType": "textbox"
+        "controlType": "dropdown",
+        "options": [{
+          "key": "1",
+          "value": "1%"
+        }, {
+          "key": "2",
+          "value": "2%"
+        }, {
+          "key": "3",
+          "value": "3%"
+        }, {
+          "key": "4",
+          "value": "4%"
+        }, {
+          "key": "5",
+          "value": "5%"
+        }]
       },
       {
         "key": "isMuted",
