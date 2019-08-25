@@ -4,6 +4,7 @@ const currency = 'BTC-USD';
 const refresh = 4320;
 const decimals = 2;
 const threshold = 5;
+const threshold_effect = 'BLINK'
 const isMuted = true;
 
 describe('getPrice', function () {
@@ -70,6 +71,8 @@ describe('CryptoWatch', () => {
       let app = new t.CryptoWatch();
       app.config = {
         currency: currency,
+        threshold: threshold,
+        threshold_effect: threshold_effect,
         geometry: {
           width: 1,
           height: 1,
@@ -99,6 +102,7 @@ describe('CryptoWatch', () => {
         const price = require('./test-price.json');
         const oldPrice = 6482.825;
         const signal = app.generateSignal(price, oldPrice);
+        console.log(signal);
         assert.ok(signal);
         assert(signal.message.includes('USD'));
         assert(signal.message.includes('7882.82'));
@@ -126,7 +130,18 @@ describe('CryptoWatch', () => {
   });
 
   describe('#run()', () => {
-    it('Can run the app', async function () {
+    it('Can run the app with a different config', async function () {
+      return buildApp(editedConfig).then(app => {
+        return app.run().then((signal) => {
+          assert.ok(signal);
+          assert(signal.name.includes(currency));
+          assert(signal.message.includes(currency.substr(currency.length -3)));
+        }).catch((error) => {
+          assert.fail(error)
+        });
+      });
+    });
+    it('Can run the app with base config', async function () {
       return buildApp().then(app => {
         return app.run().then((signal) => {
           assert.ok(signal);
@@ -139,7 +154,7 @@ describe('CryptoWatch', () => {
         });
       });
     });
-    it('Can run the app a second time', async function () {
+    it('Can run the app a second time with same config', async function () {
       return buildApp().then(app => {
         return app.run().then((signal) => {
           assert.ok(signal);
@@ -153,6 +168,8 @@ describe('CryptoWatch', () => {
   });
 })
 
+
+
 const baseConfig = {
   extensionId: 'q-applet-crypto-watch',
   geometry: {
@@ -165,7 +182,26 @@ const baseConfig = {
       refresh: refresh,
       decimals: decimals,
       threshold: threshold,
+      threshold_effect: threshold_effect,
       isMuted: isMuted
+    }
+  }
+};
+
+const editedConfig = {
+  extensionId: 'q-applet-crypto-watch',
+  geometry: {
+    width: 1,
+    height: 1,
+  },
+  applet: {
+    user: {
+      currency: currency,
+      refresh: 30,
+      decimals: 0,
+      threshold: 0.001,
+      threshold_effect: 'BREATHE',
+      isMuted: false
     }
   }
 };

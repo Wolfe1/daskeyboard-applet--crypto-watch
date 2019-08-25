@@ -134,11 +134,26 @@
         }]
       },
       {
+        "key": "threshold_effect",
+        "label": "Effect when threshold is met",
+        "value": "BREATHE",
+        "required": true,
+        "order": 5,
+        "controlType": "dropdown",
+        "options": [{
+          "key": "BREATHE",
+          "value": "Breathe"
+        }, {
+          "key": "BLINK",
+          "value": "Blink"
+        }]
+      },
+      {
         "key": "isMuted",
         "label": "Display alerts?",
         "help": "Display an alert window (bottom right of the screen) on each update?",
         "required": true,
-        "order": 5,
+        "order": 6,
         "controlType": "checkbox",
         "value": false
       }
