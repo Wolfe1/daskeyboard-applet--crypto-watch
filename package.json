@@ -83,7 +83,7 @@
       },
       {
         "key": "refresh",
-        "label": "Refresh interval in minutes",
+        "label": "Refresh interval",
         "help": "How often do you want to receive new data?",
         "value": "60",
         "required": true,
@@ -111,7 +111,7 @@
       },
       {
         "key": "threshold",
-        "label": "Threshold for a flashing alert (%)",
+        "label": "Threshold for a flashing alert",
         "value": "5",
         "required": true,
         "order": 4,
