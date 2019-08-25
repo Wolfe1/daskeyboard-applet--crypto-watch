@@ -101,16 +101,12 @@ class CryptoWatch extends q.DesktopApp {
   async run() {
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency.toUpperCase();
-    if (currency) {
-      logger.info("My currency is: " + currency);
-      var oldPrice = await getLastPrice(currency, this.getRefreshInterval());
-      var price = await getPrice(currency);
-      setLastPrice(price.data.amount);
-      return this.generateSignal(price, oldPrice);
-    } else {
-      logger.info("No currency pair configured.");
-      return null;
-    }
+    logger.info("My currency is: " + currency);
+    var oldPrice = await getLastPrice(currency, this.getRefreshInterval());
+    var price = await getPrice(currency);
+    setLastPrice(price.data.amount);
+    return this.generateSignal(price, oldPrice);
+
   }
 
   async applyConfig() {
@@ -134,7 +130,7 @@ class CryptoWatch extends q.DesktopApp {
   
   getDecimalPlaces() {
     //Return the decimal places for calculation and display, defaults to 2
-		return this.config.decimals ? this.config.decimals : 2;
+		return this.config.decimals;
 	}
 }
 

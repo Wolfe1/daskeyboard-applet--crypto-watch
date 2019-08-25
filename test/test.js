@@ -109,6 +109,22 @@ describe('CryptoWatch', () => {
     })
   });
 
+  describe('#generateSignal(price)', function () {
+    it('Can generate the price signal lower', function () {
+      return buildApp().then(app => {
+        const price = require('./test-price.json');
+        const oldPrice = 8482.825;
+        const signal = app.generateSignal(price, oldPrice);
+        assert.ok(signal);
+        assert(signal.message.includes('USD'));
+        assert(signal.message.includes('7882.82'));
+        assert(signal.message.includes('Previous Close: 8482.83'));
+        assert(signal.message.includes('-600.00'));
+        assert(signal.message.includes('-7.07%'));
+      })
+    })
+  });
+
   describe('#run()', () => {
     it('Can run the app', async function () {
       return buildApp().then(app => {
