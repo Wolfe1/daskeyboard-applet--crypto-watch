@@ -148,4 +148,4 @@ module.exports = {
   CryptoWatch: CryptoWatch
 }
 
-const applet = new CryptoWatch();
+new CryptoWatch();
