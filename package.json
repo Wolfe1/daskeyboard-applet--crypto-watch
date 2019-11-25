@@ -160,7 +160,7 @@
     ]
   },
   "devDependencies": {
-    "coveralls": "^3.0.7",
+    "coveralls": "^3.0.8",
     "localStorage": "^1.0.4",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1"
