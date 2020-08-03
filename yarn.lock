@@ -1217,15 +1217,15 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-daskeyboard-applet@^2.11.1:
-  version "2.11.4"
-  resolved "https://registry.yarnpkg.com/daskeyboard-applet/-/daskeyboard-applet-2.11.4.tgz#0ab57a05174b52a2297fed2505994a308ed18517"
-  integrity sha512-XWMppnlwH/QEMYkXMW2hjZze6i3ad1nd0JQabxYndemXe6AyUUm9lMumoe+/AzmH7QSMBQJCJykVckXU6dCavQ==
+daskeyboard-applet@^2.11.5:
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/daskeyboard-applet/-/daskeyboard-applet-2.11.5.tgz#66ef6df07e0de3ad86e38f6e96bb53b3e3cb2d44"
+  integrity sha512-mvhDIu9OQOXUotC94++k8TJBSN/teHTcA+VOv3QNiTq/KfmxLAYxlTl7YmeyAk8+dJqaNo1jB9/cDuHBocjk2w==
   dependencies:
     moment "^2.22.2"
     node-localstorage "^1.3.1"
     request "^2.88.0"
-    request-promise "^4.2.2"
+    request-promise "^4.2.6"
     winston "^3.1.0"
 
 data-uri-to-buffer@1:
@@ -2711,7 +2711,7 @@ lodash.values@^4.3.0:
   resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
   integrity sha1-o6bCsOvsxcLLocF+bmIP6BtT00c=
 
-lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14:
+lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.19:
   version "4.17.19"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
   integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
@@ -3551,20 +3551,20 @@ release-zalgo@^1.0.0:
   dependencies:
     es6-error "^4.0.1"
 
-request-promise-core@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/request-promise-core/-/request-promise-core-1.1.2.tgz#339f6aababcafdb31c799ff158700336301d3346"
-  integrity sha512-UHYyq1MO8GsefGEt7EprS8UrXsm1TxEvFUX1IMTuSLU2Rh7fTIdFtl8xD7JiEYiWU2dl+NYAjCTksTehQUxPag==
+request-promise-core@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/request-promise-core/-/request-promise-core-1.1.4.tgz#3eedd4223208d419867b78ce815167d10593a22f"
+  integrity sha512-TTbAfBBRdWD7aNNOoVOBH4pN/KigV6LyapYNNlAPA8JwbovRti1E88m3sYAwsLi5ryhPKsE9APwnjFTgdUjTpw==
   dependencies:
-    lodash "^4.17.11"
+    lodash "^4.17.19"
 
-request-promise@^4.2.2:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/request-promise/-/request-promise-4.2.4.tgz#1c5ed0d71441e38ad58c7ce4ea4ea5b06d54b310"
-  integrity sha512-8wgMrvE546PzbR5WbYxUQogUnUDfM0S7QIFZMID+J73vdFARkFy+HElj4T+MWYhpXwlLp0EQ8Zoj8xUA0he4Vg==
+request-promise@^4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/request-promise/-/request-promise-4.2.6.tgz#7e7e5b9578630e6f598e3813c0f8eb342a27f0a2"
+  integrity sha512-HCHI3DJJUakkOr8fNoCc73E5nU5bqITjOYFMDrKHYOXWXrgD/SBaC7LjwuPymUprRyuF06UK7hd/lMHkmUXglQ==
   dependencies:
     bluebird "^3.5.0"
-    request-promise-core "1.1.2"
+    request-promise-core "1.1.4"
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
