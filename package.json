@@ -23,7 +23,7 @@
   "readMeUrl": "README.md",
   "readMeEndUserUrl": "README_ENDUSER.md",
   "dependencies": {
-    "daskeyboard-applet": "^2.11.1",
+    "daskeyboard-applet": "^2.11.5",
     "localStorage": "^1.0.4",
     "moment": "2.27.0",
     "yarn": "^1.22.4",
