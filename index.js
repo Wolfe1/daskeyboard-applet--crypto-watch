@@ -123,7 +123,7 @@ class CryptoWatch extends q.DesktopApp {
       return getPrice(currency).then(() => {
         return true;
       }).catch((error) => {
-        throw new Error("Error validating currency pair: " + currency, error);
+        throw new Error("Error validating currency pair: " + currency +", " + error);
       })
     }
   }
