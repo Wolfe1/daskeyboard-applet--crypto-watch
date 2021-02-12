@@ -5,7 +5,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/wolfe1/daskeyboard-applet--crypto-watch/badge)](https://www.codefactor.io/repository/github/wolfe1/daskeyboard-applet--crypto-watch)
 [![DeepScan grade](https://deepscan.io/api/teams/10694/projects/13522/branches/230975/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=10694&pid=13522&bid=230975)
 [![Known Vulnerabilities](https://snyk.io//test/github/Wolfe1/daskeyboard-applet--crypto-watch/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Wolfe1/daskeyboard-applet--crypto-watch?targetFile=package.json)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FWolfe1%2Fdaskeyboard-applet--crypto-watch.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FWolfe1%2Fdaskeyboard-applet--crypto-watch?ref=badge_shield)
 
 Displays cryptocurrecny price changes on a Das Keyboard Q Series.
 Keys are assigned either a green or a red color depending on the cryptocurrency
