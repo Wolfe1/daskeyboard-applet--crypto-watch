@@ -23,6 +23,7 @@ jobs:
         run: |
           yarn
           yarn upgrade
+          npm install coveralls
       - name: Run Unit Tests
         run: |
           yarn test
