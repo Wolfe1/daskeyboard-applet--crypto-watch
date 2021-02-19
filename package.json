@@ -38,7 +38,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=lcov",
     "snyk-protect": "snyk protect",
     "prepare": "yarn run snyk-protect"
   },
