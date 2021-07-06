@@ -1,0 +1,23 @@
+pull_request_rules:
+  - name: Automatic merge for dependabot when everything passes
+    conditions:
+    - and:
+        - author~=^dependabot
+        - check-success-or-neutral=CodeFactor
+        - check-success-or-neutral=DeepScan
+        - check-success-or-neutral=Hound
+        - check-success-or-neutral=finish
+        - check-success-or-neutral=run-tests (10.x)
+        - check-success-or-neutral=run-tests (12.x)
+        - check-success-or-neutral=run-tests (14.x)
+        - check-success-or-neutral=run-tests (15.x)
+        - check-success-or-neutral=Analyze (javascript)
+        - check-success-or-neutral=CodeQL
+        - check-success-or-neutral=Coveralls - run-10.x
+        - check-success-or-neutral=Coveralls - run-12.x
+        - check-success-or-neutral=Coveralls - run-14.x
+        - check-success-or-neutral=Coveralls - run-15.x
+        - check-success-or-neutral=coverage/coveralls
+    actions:
+      merge:
+        method: merge
