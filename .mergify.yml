@@ -18,7 +18,6 @@ pull_request_rules:
         - check-success-or-neutral=Coveralls - run-14.x
         - check-success-or-neutral=Coveralls - run-15.x
         - check-success-or-neutral=coverage/coveralls
-        
     actions:
       merge:
         method: merge
