@@ -7,10 +7,10 @@ pull_request_rules:
         - check-success-or-neutral=DeepScan
         - check-success-or-neutral=Hound
         - check-success-or-neutral=finish
-        - check-success-or-neutral=run-tests (10.x)
         - check-success-or-neutral=run-tests (12.x)
         - check-success-or-neutral=run-tests (14.x)
         - check-success-or-neutral=run-tests (15.x)
+        - check-success-or-neutral=run-tests (16.x)
         - check-success-or-neutral=Analyze (javascript)
         - check-success-or-neutral=CodeQL
         - check-success-or-neutral=Coveralls - run-12.x
