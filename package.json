@@ -26,7 +26,7 @@
     "daskeyboard-applet": "^2.11.5",
     "localStorage": "^1.0.4",
     "moment": "2.29.1",
-    "yarn": "^1.22.11",
+    "yarn": "^1.22.15",
     "snyk": "^1.730.0"
   },
   "engines": {
