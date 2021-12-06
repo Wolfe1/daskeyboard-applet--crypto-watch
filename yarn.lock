@@ -1563,10 +1563,10 @@ slide@^1.1.5:
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
   integrity sha1-VusCfWW00tzmyy4tMsTUr8nh1wc=
 
-snyk@^1.777.0:
-  version "1.777.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.777.0.tgz#6de37b70395199a273e74b15d9d2b4a6ceefd45a"
-  integrity sha512-V18/cZxdETC/FBEb2HmweSo8C/3duFbk4TWmoKx/30Ih5U5NP8w4isqABj6NMseKjO3KWyENA+S5PUr0c18bHg==
+snyk@^1.783.0:
+  version "1.783.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.783.0.tgz#f6cb2dd4739e6ce589a0873016f264dcc078b51e"
+  integrity sha512-2MPHVugkK0UKtviM9bvh1rpf5GMC+dCH3G0431n+gGQxiTwufGG4W+I3+4Fdez0WQneHaMlZ06wIJ9SLR2ahTQ==
 
 source-map@^0.5.0:
   version "0.5.7"
