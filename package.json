@@ -27,7 +27,7 @@
     "localStorage": "^1.0.4",
     "moment": "2.29.1",
     "yarn": "^1.22.17",
-    "snyk": "^1.852.0"
+    "snyk": "^1.855.0"
   },
   "engines": {
     "das-keyboard-q": "3.2.4"
