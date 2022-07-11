@@ -25,7 +25,7 @@
   "dependencies": {
     "daskeyboard-applet": "^2.11.5",
     "localStorage": "^1.0.4",
-    "moment": "2.29.3",
+    "moment": "2.29.4",
     "yarn": "^1.22.19",
     "snyk": "^1.962.0"
   },
