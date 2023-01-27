@@ -1,7 +1,7 @@
 {
   "name": "daskeyboard-applet--crypto-watch",
   "displayName": "Crypto Watch",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Displays cryptocurrency prices.",
   "longDescription": "Monitor your favorite cryptocurrecny prices.",
   "officialProductName": "Crypto Watch",
@@ -23,10 +23,11 @@
   "readMeUrl": "README.md",
   "readMeEndUserUrl": "README_ENDUSER.md",
   "dependencies": {
-    "daskeyboard-applet": "^2.11.1",
-    "yarn": "^1.16.0",
+    "daskeyboard-applet": "^2.11.5",
     "localStorage": "^1.0.4",
-    "moment": "2.24.0"
+    "moment": "2.29.4",
+    "yarn": "^1.22.19",
+    "snyk": "^1.1088.0"
   },
   "engines": {
     "das-keyboard-q": "3.2.4"
@@ -36,7 +37,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "nyc mocha",
+    "coverage": "nyc report --reporter=lcov",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "qConfig": {
     "geometry": {
@@ -59,38 +63,132 @@
         "value": "2",
         "required": true,
         "order": 2,
-        "controlType": "textbox"
+        "controlType": "dropdown",
+        "options": [
+          {
+            "key": "0",
+            "value": "0"
+          },
+          {
+            "key": "1",
+            "value": "1"
+          },
+          {
+            "key": "2",
+            "value": "2"
+          },
+          {
+            "key": "3",
+            "value": "3"
+          },
+          {
+            "key": "4",
+            "value": "4"
+          },
+          {
+            "key": "5",
+            "value": "5"
+          }
+        ]
       },
       {
         "key": "refresh",
-        "label": "Refresh interval in minutes",
+        "label": "Refresh interval",
         "help": "How often do you want to receive new data?",
         "value": "60",
         "required": true,
         "order": 3,
-        "controlType": "textbox"
+        "controlType": "dropdown",
+        "options": [
+          {
+            "key": "1",
+            "value": "1 Minute"
+          },
+          {
+            "key": "5",
+            "value": "5 Minutes"
+          },
+          {
+            "key": "10",
+            "value": "10 Minutes"
+          },
+          {
+            "key": "15",
+            "value": "15 Minutes"
+          },
+          {
+            "key": "30",
+            "value": "30 Minutes"
+          },
+          {
+            "key": "60",
+            "value": "60 Minutes"
+          }
+        ]
       },
       {
         "key": "threshold",
-        "label": "Threshold for a flashing alert (%)",
+        "label": "Threshold for a flashing alert",
         "value": "5",
         "required": true,
         "order": 4,
-        "controlType": "textbox"
+        "controlType": "dropdown",
+        "options": [
+          {
+            "key": "1",
+            "value": "1%"
+          },
+          {
+            "key": "2",
+            "value": "2%"
+          },
+          {
+            "key": "3",
+            "value": "3%"
+          },
+          {
+            "key": "4",
+            "value": "4%"
+          },
+          {
+            "key": "5",
+            "value": "5%"
+          }
+        ]
+      },
+      {
+        "key": "threshold_effect",
+        "label": "Effect when threshold is met",
+        "value": "BREATHE",
+        "required": true,
+        "order": 5,
+        "controlType": "dropdown",
+        "options": [
+          {
+            "key": "BREATHE",
+            "value": "Breathe"
+          },
+          {
+            "key": "BLINK",
+            "value": "Blink"
+          }
+        ]
       },
       {
         "key": "isMuted",
         "label": "Display alerts?",
         "help": "Display an alert window (bottom right of the screen) on each update?",
         "required": true,
-        "order": 5,
+        "order": 6,
         "controlType": "checkbox",
         "value": false
       }
     ]
   },
   "devDependencies": {
-    "mocha": "^6.1.4",
-    "localStorage": "^1.0.4"
-  }
+    "coveralls": "^3.1.1",
+    "mocha": "^9.2.2",
+    "nyc": "^15.1.0"
+  },
+  "snyk": true
 }

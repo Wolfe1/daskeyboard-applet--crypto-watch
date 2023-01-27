@@ -64,21 +64,26 @@ class CryptoWatch extends q.DesktopApp {
     const currency = this.config.currency.toUpperCase();
     const isMuted = this.config.isMuted;
     const threshold = this.config.threshold;
+    const threshold_effect = this.config.threshold_effect;
     const latestPrice = price.data.amount;
     const previousClose = oldPrice;
     const decimals = this.getDecimalPlaces();
 
     const change = formatChange((latestPrice - previousClose), decimals);
-    const changePercent = formatChange((change / previousClose * 100), decimals);
+    const changePercent = formatChange((change / previousClose * 100), 2);
 
     const color = (latestPrice >= previousClose) ? '#00FF00' : '#FF0000';
     var point = [new q.Point(color)];
-    if (changePercent < -threshold) { 
-      point = [new q.Point(color, q.Effects.BLINK)]; 
+    if (changePercent < -threshold || changePercent > threshold) {
+      if (threshold_effect == 'BLINK') {
+        point = [new q.Point(color, q.Effects.BLINK)];
+      }
+      else {
+        point = [new q.Point(color, q.Effects.BREATHE)];
+      }
     }
-    if (changePercent > threshold) { 
-      point = [new q.Point(color, q.Effects.BLINK)]; 
-    }
+    console.log(point);
+    
 
     
     return new q.Signal({
@@ -91,7 +96,7 @@ class CryptoWatch extends q.DesktopApp {
       },
       name: currency +' Price',
       message:
-        `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} <b>(${change} ${changePercent}%)</b>` +
+        `${currency.substr(currency.length -3)} ${round(latestPrice, decimals)} (${change} ${changePercent}%)` +
         "\n" +
         `Previous Close: ${round(previousClose, decimals)}`,
       isMuted: !isMuted
@@ -101,16 +106,12 @@ class CryptoWatch extends q.DesktopApp {
   async run() {
     logger.info("Crypto Watch Running.");
     const currency = this.config.currency.toUpperCase();
-    if (currency) {
-      logger.info("My currency is: " + currency);
-      var oldPrice = await getLastPrice(currency, this.getRefreshInterval());
-      var price = await getPrice(currency);
-      setLastPrice(price.data.amount);
-      return this.generateSignal(price, oldPrice);
-    } else {
-      logger.info("No currency pair configured.");
-      return null;
-    }
+    logger.info("My currency is: " + currency);
+    var oldPrice = await getLastPrice(currency, this.getRefreshInterval());
+    var price = await getPrice(currency);
+    setLastPrice(price.data.amount);
+    return this.generateSignal(price, oldPrice);
+
   }
 
   async applyConfig() {
@@ -122,7 +123,7 @@ class CryptoWatch extends q.DesktopApp {
       return getPrice(currency).then(() => {
         return true;
       }).catch((error) => {
-        throw new Error("Error validating currency pair: " + currency, error);
+        throw new Error("Error validating currency pair: " + currency +", " + error);
       })
     }
   }
@@ -134,7 +135,7 @@ class CryptoWatch extends q.DesktopApp {
   
   getDecimalPlaces() {
     //Return the decimal places for calculation and display, defaults to 2
-		return this.config.decimals ? this.config.decimals : 2;
+		return this.config.decimals;
 	}
 }
 
@@ -147,4 +148,4 @@ module.exports = {
   CryptoWatch: CryptoWatch
 }
 
-const applet = new CryptoWatch();
+new CryptoWatch();
