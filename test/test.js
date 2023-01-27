@@ -102,7 +102,6 @@ describe('CryptoWatch', () => {
         const price = require('./test-price.json');
         const oldPrice = 6482.825;
         const signal = app.generateSignal(price, oldPrice);
-        console.log(signal);
         assert.ok(signal);
         assert(signal.message.includes('USD'));
         assert(signal.message.includes('7882.82'));
