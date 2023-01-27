@@ -63,3 +63,6 @@ typings/
 .vs/ProjectSettings.json
 .vs/VSWorkspaceState.json
 .vs/slnx.sqlite
+
+# Centralized lock file into yarn.lock
+package-lock.json

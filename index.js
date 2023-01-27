@@ -82,9 +82,6 @@ class CryptoWatch extends q.DesktopApp {
         point = [new q.Point(color, q.Effects.BREATHE)];
       }
     }
-    console.log(point);
-    
-
     
     return new q.Signal({
       points: [

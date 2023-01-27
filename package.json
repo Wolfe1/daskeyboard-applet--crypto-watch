@@ -25,9 +25,7 @@
   "dependencies": {
     "daskeyboard-applet": "^2.11.5",
     "localStorage": "^1.0.4",
-    "moment": "2.29.4",
-    "yarn": "^1.22.19",
-    "snyk": "^1.1088.0"
+    "moment": "2.29.4"
   },
   "engines": {
     "das-keyboard-q": "3.2.4"
@@ -102,27 +100,27 @@
         "options": [
           {
             "key": "1",
-            "value": "1 Minute"
+            "value": "1 minute"
           },
           {
             "key": "5",
-            "value": "5 Minutes"
+            "value": "5 minutes"
           },
           {
             "key": "10",
-            "value": "10 Minutes"
+            "value": "10 minutes"
           },
           {
             "key": "15",
-            "value": "15 Minutes"
+            "value": "15 minutes"
           },
           {
             "key": "30",
-            "value": "30 Minutes"
+            "value": "30 minutes"
           },
           {
             "key": "60",
-            "value": "60 Minutes"
+            "value": "60 minutes"
           }
         ]
       },
@@ -188,7 +186,8 @@
   "devDependencies": {
     "coveralls": "^3.1.1",
     "mocha": "^9.2.2",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "snyk": "^1.1088.0"
   },
   "snyk": true
 }
